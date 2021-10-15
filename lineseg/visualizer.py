@@ -1,3 +1,8 @@
+# Adam Caulfield (ac7717)
+# CSCI716 - Assignment 2
+# visualizer.py - implements a visualizing function, which is called every time the sweep line is incremented
+# October 14, 2021
+
 import matplotlib.pyplot as plt
 
 # Function to visualize the line-sweep over a continuous for loop

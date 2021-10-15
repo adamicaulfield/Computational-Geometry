@@ -1,7 +1,8 @@
-# Assumes the inputs of 
-# 		- seg list of 2 elements [x,y]
-#		- a queue which lists the segs added sorted by x coordinate as a 2D list,
-#		- returns updated queue
+# Adam Caulfield (ac7717)
+# CSCI716 - Assignment 2
+# eventQueue.py - implements the event queue object as a list, with additional information
+# each entry in the queue contains [leftX, leftY, rightX, rightY, id]
+# October 14, 2021
 
 import random
 
@@ -15,7 +16,6 @@ def eqInsert(seg, queue):
 
 	# If queue is empty, initialize queue
 	if(qSize==0):
-		# print("Queue empty, appending seg: "+str(seg))
 		queue.append(seg)
 	
 	else:	
@@ -27,7 +27,6 @@ def eqInsert(seg, queue):
 		else:
 			# New seg has largest x of all segs in the queue
 			if(seg[0] >= queue[qSize-1][0]):
-				# print("Adding to end of queue: "+str(seg))
 				queue.append(seg)
 
 			# Not an edge case
@@ -40,11 +39,6 @@ def eqInsert(seg, queue):
 				leftEnd = 0
 
 				while(checkLeft or checkRight):
-					# print("mid="+str(mid)
-					# 	+"  leftEnd:"+str(leftEnd)
-					# 	+"  rightEnd:"+str(rightEnd)
-					# 	+"  "+str(seg[0])+"<"+str(queue[mid-1][0])
-					# 	+"  "+str(seg[0])+">"+str(queue[mid][0]))
 
 					totalChecks = totalChecks+1
 					if(checkRight): #checkRight is true
@@ -59,9 +53,6 @@ def eqInsert(seg, queue):
 					checkRight = (seg[0] > queue[mid][0])
 
 				queue = queue[:mid] + [seg] + queue[mid:]
-				# print("Adding to  index "+str(mid)+": "+str(seg))
-	# print("Comparisons Required for insert(): "+str(totalChecks))
-	# print(queue)
 	return queue
 
 # In the ordered queue, the event with the smallest x-coordinate will

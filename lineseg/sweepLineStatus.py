@@ -1,4 +1,8 @@
-# Segment comes in form [slope, intercept, currentY, ID]
+# Adam Caulfield (ac7717)
+# CSCI716 - Assignment 2
+# sweepLineStatus.py - implements the sweep-line object also as a list, with additional information too
+# each entry has the form [slope, intercept, currentY, ID]
+# October 14, 2021
 
 def slsInsert(seg, sls):
 	# Sorts w.r.t index=2, which holds the current Y of the segment on the sweep-line
@@ -15,9 +19,6 @@ def slsInsert(seg, sls):
 	else:	
 		# New seg has smallest y of all segs in sls
 		if(seg[2]+.9 >= sls[0][2]):
-			# print("Seg:"+str(seg))
-			# print("sls[0]"+str(sls[0]))
-			# print("Adding to front of sls: "+str(seg))
 			sls = [seg]+sls 
 
 		else:
@@ -36,13 +37,6 @@ def slsInsert(seg, sls):
 				leftEnd = 0
 
 				while(checkLeft or checkRight):
-					# print("mid="+str(mid)
-					# 	+"  leftEnd:"+str(leftEnd)
-					# 	+"  rightEnd:"+str(rightEnd)
-					# 	+"  "+str(seg[2])+"<"+str(sls[mid-1][1])
-					# 	+"  "+str(seg[2])+">"+str(sls[mid][1]))
-					# print(sls[0][2])
-					# print(sls[qSize-1][2])
 					totalChecks = totalChecks+1
 					if(checkRight): #checkRight is true
 						leftEnd=mid
@@ -56,9 +50,6 @@ def slsInsert(seg, sls):
 					checkRight = (seg[2] < sls[mid][2])
 
 				sls = sls[:mid] + [seg] + sls[mid:]
-				# print("Adding to  index "+str(mid)+": "+str(seg))
-	# print("Comparisons Required for insert(): "+str(totalChecks))
-	# print(sls)
 	return sls
 
 # Deletes a given entry in the sweep line status
