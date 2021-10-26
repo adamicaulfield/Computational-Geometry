@@ -33,6 +33,8 @@ This function acts as a helper for both the Brute-Force and Graham Scan approach
 ### runAndTime.sh
 This is a bash script to run multiple iterations of both bruteForce.py and graham.py, and this script will determine & display the average run time of both algorithms.
 
+Due to myCourses not allowing submission of .sh files, this file is located at the following google drive link: https://drive.google.com/drive/folders/1XR43TAR-ALLlR8PsGcSLJha3whqH6Dzt?usp=sharing
+
 ## How to run
 Simply run the bash script with the command `./runAndTime.sh ITERS` replacing 'ITERS' with the number of iterations that you would like to run. For example, to run 25 iterations of both algorithms execute the command `./runAndTime.sh 25`
 

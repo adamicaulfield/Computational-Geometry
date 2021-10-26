@@ -1,0 +1,43 @@
+<html>
+<head>
+
+<style>
+  #ptitle {
+  	width: 25%;
+  }
+  #pbody{
+  	width: 50%;
+  }
+  th{
+    padding: 1%;
+  }
+</style>
+
+</head>
+
+<script
+src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+</script>
+
+<body>
+
+<h1 id = "ptitle" align="left" >Ring-LWE Visual Aid</h1>
+
+<form>
+  <input type="text" id="input_id" value="">
+  <input type="button" value="Submit" onclick="wawa()" />
+  <div id="alert" style="color: red"></div>
+</form>
+
+<script type="text/javascript">
+  function wawa() {
+    var variable = document.getElementById('input_id').value;
+    document.getElementById('alert').innerHTML = 'The user input is: ' + variable;
+  }
+</script>
+
+</body>
+
+
+
+</html>
