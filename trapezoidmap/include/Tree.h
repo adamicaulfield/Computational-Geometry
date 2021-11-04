@@ -8,20 +8,26 @@
 #include <fstream>
 
 #include "Node.h"
+#include "Segment.h"
 
-class Node; // handle cyclic dependency betewen Node and Tree
+// handle cyclic dependencies
+class Node; 
+class Segment;
 
 class Tree {
 public:
 	Tree();
     Node * getRoot();
     int getTreeSize();
-    void insertNode(Node *);
-    void balanceTree(Node *);
+    void insert(Segment *);
     void printTree(Node *, int = 0);
+    void addLeafNodes(Node *);
+    void deleteLeafNodes(Node *);
 private:
     Node * root;
     int size; //total nodes
+    int totalTrapezoids;
+    int totalSegments;
 };
 
 #endif /*TREE_H*/

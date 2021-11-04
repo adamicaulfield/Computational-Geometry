@@ -1,2 +1,6 @@
 webgl-demo/
+*.png
+*.o
+/trapezoidmap/bin/*
+
 

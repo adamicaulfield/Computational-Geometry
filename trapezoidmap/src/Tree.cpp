@@ -8,6 +8,7 @@
 Tree::Tree(){
 	size = 0;
 	root = NULL;
+	totalTrapezoids = 0;
 }
 
 // Get node at the top of the tree
@@ -19,102 +20,222 @@ int Tree::getTreeSize(){
 	return size;
 }
 
-void Tree::insertNode(Node * node){
-	if(root==nullptr){
-		// printf("\tNode is first, now \'root\'\n");
-		root = node;
+void Tree::insert(Segment * s){
+	printf("beginning insert()....\n");
+
+	printf("getting left and right endpoints from segment\n");
+	std::vector<int> leftEndPoint = s->getLeftEndpoint();
+	std::vector<int> rightEndPoint = s->getRightEndpoint();
+
+	int xl = leftEndPoint[0];
+	int yl = leftEndPoint[1];
+	int xr = rightEndPoint[0];
+	int yr = rightEndPoint[1];
+
+
+	Node * r = new Node(this, s, NodeType::x);
+	Node * l = new Node(this, s, NodeType::x);
+	l->setValue(xl);		
+	r->setValue(xr);
+
+	Node * seg = new Node(this, s, NodeType::y);
+	seg->setValue(totalSegments);
+
+	if(size == 0){
+		printf("Adding seg to tree, tree has size = 0\n");
+		// Add point nodes
+
+		root = l;
+		l->setRight(r);
+
+		// Add segment node
+		r->setLeft(seg);
+		addLeafNodes(root);
 	} else{
-		Node * checkNode = root;
-		Node * lastNode = root;
-		while(checkNode != nullptr){
-			lastNode = checkNode;
-			if(node->getValue() <= checkNode->getValue()){
-				checkNode->leftCount++;
-				checkNode = checkNode->getLeft();
 
-				// printf("moving left\n");
-
-			} else {
-				checkNode->rightCount++;
-				checkNode = checkNode->getRight();
-				// printf("moving right\n");
+		// Locate trapezoid leaf node which holds the left endpoint
+		Node * searchNode = root;
+		Node * prevNode;
+		NodeType searchNodeType = searchNode->getNodeType();
+		bool dir = true;
+		printf("Starting LEFT while loop...\n");
+		while(searchNodeType != NodeType::leaf){
+			prevNode = searchNode;
+			switch(searchNodeType){	
+				case NodeType::x:
+					if(xl < searchNode->getValue()){
+						searchNode = searchNode->getLeft();
+						dir = true;
+					} else{
+						searchNode = searchNode->getRight();
+						dir = false;
+					}
+					break;
+				
+				case NodeType::y:
+					if(yl < searchNode->getSegment()->getYonSeg(xl)){
+						searchNode = searchNode->getLeft();
+						dir = true;
+					} else{
+						searchNode = searchNode->getRight();
+						dir = false;
+					}
+					break;
 			}
+			searchNodeType = searchNode->getNodeType();
 		}
+		printf("Finished LEFT while loop...\n");
+		// searchNode now holds leaf node, prevNode now holds its parent
 
-		if(node->getValue() <= lastNode->getValue()){
-			lastNode->setLeft(node);
-			// printf("\tAdding to left\n");
+		// replace leaf node with the new x-node
+		if(dir){ //left
+			prevNode->setLeft(l);
+			delete(searchNode);
 
 		} else{
-			lastNode->setRight(node);
-			// printf("\tAdding to right\n");
+			prevNode->setRight(l);
+			delete(searchNode);
+		}
+		l->setRight(seg);
+		addLeafNodes(l);
+
+		//Locate trapezoid leaf node which holds the right endpoint
+		searchNode = root;
+		searchNodeType = searchNode->getNodeType();
+		dir = true;
+		printf("Starting RIGHT while loop...\n");
+		while(searchNodeType != NodeType::leaf){
+			prevNode = searchNode;
+			switch(searchNodeType){	
+				case NodeType::x:
+					if(xr < searchNode->getValue()){
+						searchNode = searchNode->getLeft();
+						dir = true;
+					} else{
+						searchNode = searchNode->getRight();
+						dir = false;
+					}
+					break;
+				
+				case NodeType::y:
+					if(yr < searchNode->getSegment()->getYonSeg(xr)){
+						searchNode = searchNode->getLeft();
+						dir = true;
+					} else{
+						searchNode = searchNode->getRight();
+						dir = false;
+					}
+					break;
+			}
+			searchNodeType = searchNode->getNodeType();
+		}
+		printf("Finished RIGHT while loop...\n");
+
+		if(dir){ //left
+			prevNode->setLeft(r);
+			delete(searchNode);
+		} else{
+			prevNode->setRight(r);
+			delete(searchNode);
+		}
+		r->setLeft(seg);
+		addLeafNodes(r);
+		// searchNode now holds leaf node, prevNode now holds its parent
+
+	}
+	// printf("beginning addLeafNodes()....\n");
+	// addLeafNodes(root);
+	// printf("finished addLeafNodes()....\n");
+	// printf("finished insert()....\n");
+	totalSegments++;
+	size++;
+}
+
+void Tree::addLeafNodes(Node * node){
+	if(node != nullptr){
+		if(node->getLeft() == nullptr){
+			Node * leaf = new Node(this, nullptr, NodeType::leaf);
+			leaf->setValue(totalTrapezoids);
+			totalTrapezoids++;
+			node->setLeft(leaf);
+		} else{
+			if(node->getLeft()->getNodeType() != NodeType::leaf){
+				addLeafNodes(node->getLeft());	
+			}
+		}
+
+		if(node->getRight() == nullptr){
+			Node * leaf = new Node(this, nullptr, NodeType::leaf);
+			leaf->setValue(totalTrapezoids);
+			totalTrapezoids++;
+			node->setRight(leaf);
+		} else{
+			if(node->getRight()->getNodeType() != NodeType::leaf){
+				addLeafNodes(node->getRight());
+			}
+		}
+	} else{
+		return;
+	}
+}
+
+void Tree::deleteLeafNodes(Node * node){
+	if(node != nullptr){
+		if(node->getLeft() != nullptr){
+			if(node->getLeft()->getNodeType() == NodeType::leaf){
+				Node * leaf = node->getLeft();
+				node->setLeft(nullptr);
+				delete(leaf);
+			} else {
+				deleteLeafNodes(node->getLeft());
+				totalTrapezoids--;
+			}
+		} else{
+			return;
+		}
+
+		if(node->getRight() != nullptr){
+			if(node->getRight()->getNodeType() == NodeType::leaf){
+				Node * leaf = node->getRight();
+				node->setRight(nullptr);
+				delete(leaf);
+			} else {
+				deleteLeafNodes(node->getRight());
+				totalTrapezoids--;
+			}
+		} else{
+			return;
 		}
 	}
-	size++;
-	// printf("Balancing tree...\n");
-	balanceTree(root);
-	printf("---------- After insert ----------\n");
-	printTree(root);
-	printf("----------------------------------\n");
 }
-
-void Tree::balanceTree(Node * z){
-	/*
-	* Inspiration from: https://www.geeksforgeeks.org/avl-tree-set-1-insertion/
-	* In this explanation, z and y are nodes. Node z identifies there is unbalance,
-	* and Node y determines the type of rotation needed.
-	*/
-
-	int bf = z->rightCount - z->leftCount;
-
-	if(bf > 1){ //right
-		printf("--RIGHT UNBALANCED--\n");
-		Node * y = z->getRight();
-		int bfy = y->rightCount - y->leftCount;		
-		if(bfy > 0){ // right right case
-			printf("--handling right-right case--\n");
-			// Rotate the tree to the left pivoting on Y
-			Node * yLeft = y->getLeft();
-			z->setRight(yLeft);
-			y->setLeft(z);
-
-			//if z was previously the root, update the root to be y;
-			if(root == z){
-				root = y;
-			}
-
-		} 
-		// else if(bfr < -1){ // left right case
-					
-		// }
-	} 
-	// else if(bf < -1){ // left
-	// 	Node * y = z->getRight();
-	// 	int bfl = y->rightCount - z->leftCount;
-	// 	if(bfl>1){ // right left case
-			
-	// 	} else if(bfl < -1){ // left left case
-			
-	// 	}
-	// } else{
-	// 	return;
-	// }
-}
-
 
 void Tree::printTree(Node * startNode, int depth){
-	for(int i=0; i<depth; i++){
-		printf("\t");
-	}
 	depth++;
-	printf("Node(val=%d,left=%d,right=%d)\n", startNode->getValue(), startNode->leftCount, startNode->rightCount);
+	switch(startNode->getNodeType()){
+		case NodeType::x:
+			printf("Node(type:x, val:%d)\n", startNode->getValue());
+			break;
+		case NodeType::y:
+			printf("Node(type:y, segID:%d)\n", startNode->getValue());
+			break;
+		case NodeType::leaf:
+			printf("Node(type:leaf, tpzdID=%d)\n", startNode->getValue());
+			break;
+	}
+	
 	if(startNode->getRight()!=nullptr){
-		printf("right: ");
+		for(int i=0; i<depth; i++){
+			printf("\t");
+		}
+		printf("R: ");
 		printTree(startNode->getRight(), depth+1);
 	}
 
 	if(startNode->getLeft()!=nullptr){
-		printf("left: ");
+		for(int i=0; i<depth; i++){
+			printf("\t");
+		}
+		printf("L: ");
 		printTree(startNode->getLeft(), depth+1);
 	}
 }

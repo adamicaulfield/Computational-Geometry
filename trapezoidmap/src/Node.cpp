@@ -3,11 +3,12 @@
 
 #include "Node.h"
 
-Node::Node(Tree * t, int v){
-	leftNode = nullptr;
-	rightNode = nullptr;
+Node::Node(Tree * t, Segment * seg, NodeType ty){
+	left = nullptr;
+	right = nullptr;
+	s = seg;
 	tree = t;
-	value = v;
+	type = ty;
 	leftCount = 0;
 	rightCount = 0;
 }
@@ -20,26 +21,37 @@ int Node::getValue(){
 	return value;
 }
 
+void Node::setNodeType(NodeType t){
+	type = t;
+}
+
+NodeType Node::getNodeType(){
+	return type;
+}
+
 // Get pointer to  left node
 Node * Node::getLeft(){
-	return leftNode;
+	return left;
 }
 
 // Get pointer to right node
 Node * Node::getRight(){
-	return rightNode;
+	return right;
 }
 
 // Get pointer to  left node
 void Node::setLeft(Node * node){
-	leftNode = node;
+	left = node;
 }
 
 // Get pointer to right node
 void Node::setRight(Node * node){
-	rightNode = node;
+	right = node;
 }
 
+Segment * Node::getSegment(){
+	return s;
+}
 
 // Get pointer to tree, which this node is in
 Tree * Node::getTree(){
