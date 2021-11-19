@@ -7,6 +7,9 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include "Node.h"
+
+class Node;
 
 class Segment {
 public:
@@ -19,15 +22,20 @@ public:
     std::vector<int> getRightEndpoint();
     void setRightEndpoint(int, int);
 
+    int getSegID();
+    void setSegID(int);
+
     void initDual();
 
     int getYonSeg(int);
 
 private:
-    std::vector<int> rightEndpoint;
-    std::vector<int> leftEndpoint;
     int slope;
     int intercept;
+    int nodeListSize = 0;
+    int id;
+    std::vector<int> rightEndpoint;
+    std::vector<int> leftEndpoint;
 };
 
 #endif /*SEGMENT_H*/

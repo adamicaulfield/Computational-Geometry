@@ -6,7 +6,7 @@
 
 #include <iostream>
 #include <fstream>
-
+#include <string>
 #include "Tree.h"
 
 class Tree;
@@ -28,11 +28,18 @@ public:
 
     Tree * getTree();
     
+    int getMatrixIndex();
+    std::string getMatrixLabel();
+    void setMatrixParams(int, std::string);
+
     int getValue();
     void setValue(int);
     
     NodeType getNodeType();
     void setNodeType(NodeType);
+
+    bool getIsRight();
+    void setIsRight(bool);
 
     int leftCount;
     int rightCount;
@@ -45,6 +52,9 @@ private:
     Tree * tree;
     int value;
     NodeType type;
+    bool isRight; // if NodeType x, is it right or left? Needed for printing the adjacency map
+    int matrixIndex;
+    std::string matrixLabel;
 };
 
 #endif /*NODE_H*/

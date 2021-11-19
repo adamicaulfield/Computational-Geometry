@@ -58,3 +58,23 @@ Tree * Node::getTree(){
 	return tree;
 }
 
+void Node::setIsRight(bool b){
+	isRight = b;
+}
+
+bool Node::getIsRight(){
+	return isRight;
+}
+
+void Node::setMatrixParams(int v, std::string s){
+	matrixIndex = v;
+	matrixLabel = s;
+}
+
+int Node::getMatrixIndex(){
+	return matrixIndex;
+}
+
+std::string Node::getMatrixLabel(){
+	return matrixLabel;
+}

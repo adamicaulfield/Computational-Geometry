@@ -17,17 +17,30 @@ class Segment;
 class Tree {
 public:
 	Tree();
+    void readSegmentsFile(std::string);
     Node * getRoot();
     int getTreeSize();
     void insert(Segment *);
     void printTree(Node *, int = 0);
     void addLeafNodes(Node *);
     void deleteLeafNodes(Node *);
+    void setupLists(Node *);
+    void initAdjacencyMatrix();
+    void writeAdjacencyMatrix(Node *);
+    void wrireSumsAdjacencyMatrix();
+    void printAdjacencyMatrix();
+    void writeAdjacencyMatrixToFile(std::string);
+    void findPoint(int, int, Node *);
 private:
     Node * root;
     int size; //total nodes
     int totalTrapezoids;
     int totalSegments;
+    std::vector<Node *> pList;
+    std::vector<Node *> qList;
+    std::vector<Node *> sList;
+    std::vector<Node *> tList;
+    std::vector<std::vector<std::string>> adjMatrix;
 };
 
 #endif /*TREE_H*/

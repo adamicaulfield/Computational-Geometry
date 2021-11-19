@@ -1,5 +1,5 @@
 #include "Segment.h"
-
+#include "Node.h"
 // Segment::Segment(){
 // 	int xl=0;
 // 	int yl=0;
@@ -40,4 +40,13 @@ void Segment::initDual(){
 
 int Segment::getYonSeg(int x){
 	return slope*x+intercept;
+}
+
+int Segment::getSegID(){
+	return id;
+}
+
+void Segment::setSegID(int i){
+	id = i;
+	// printf("SegID = %d\n", id);
 }
