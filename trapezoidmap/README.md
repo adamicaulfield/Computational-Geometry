@@ -2,7 +2,7 @@
 
 ## Instructions to Run
 
-First, make sure you are in the `trapezoidalmap` directory.
+First, make sure you are in the `trapezoidmap` directory.
 
 First run `mkdir bin' to make sure a directory for the executable is created correctly.
 
